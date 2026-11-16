@@ -98,6 +98,8 @@ EXPECTED_MAKERS: dict[str, set[str]] = {
     "application/images.py": {API},
     # Runs only inside `treg-worker admin purge-evidence`; same reasoning as `worker.py`.
     "application/evidence_retention.py": {API},
+    # Runs only inside `treg-worker` and `python -m treg upgrade`; same reasoning as `worker.py`.
+    "application/call_record_partitions.py": {API},
     # Off-request writers.
     "audit.py": {BACKGROUND},
     # Request-shaped: the owner delete route and `treg-worker admin erase-archive`, in short
