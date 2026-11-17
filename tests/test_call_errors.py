@@ -123,7 +123,9 @@ async def test_no_request_or_answer_value_is_logged(clients: AsyncClient, platfo
     assert r.status_code == 400, r.text
     (line,) = call_error_lines()
     assert line["error_class"] == "caller_input" and line["by"] == "upstream"
-    text = "\n".join(r.getMessage() for r in caplog.records if r.name == call_errors.log.name)
+    # `call_ref` is random hex, which can spell "bad" by chance; it is not a request or answer value.
+    text = "\n".join(re.sub(r'"call_ref":"[0-9a-f]*"', '"call_ref":""', r.getMessage())
+                     for r in caplog.records if r.name == call_errors.log.name)
     for value in (CALLER_INPUT, PROVIDER_ANSWER, "OWN-KEY", "aweme_id", "bad"):
         assert value not in text
 
